@@ -1,5 +1,4 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    
-   <kbase name="myKbase" packages="rules" default="true"></kbase>
-    
+    <kbase name="labelKbase" packages="rules.label" default="false"> </kbase>
+    <kbase name="clasifyKbase" includes="labelKbase" packages="rules.classify" default="false"></kbase>
 </kmodule>

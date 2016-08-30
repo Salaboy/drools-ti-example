@@ -1,0 +1,126 @@
+package rules.labelling;
+
+import org.drools.tx.model.*;
+
+declare Transaction
+    @role(event)
+end
+
+query getUnlabelledTXs( )
+    $tx: Transaction( labels.size == 0 ) 
+       
+end
+
+rule "Sharing Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( quantity > 1 ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("sharing")
+        };
+        modify($tx){};
+end
+
+rule "Coke Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches "(?i).*coca.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("cold drink")
+        };
+        modify($tx){};
+end
+
+rule "Juice Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches "(?i).*juice.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("cold drink")
+        };
+        modify($tx){};
+end
+
+rule "Lemonade Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches "(?i).*lemonade.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("cold drink")
+        };
+        modify($tx){};
+end
+
+
+rule "Beer Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches  "(?i).*beer.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("alcohol"),
+            addLabel("beer"),
+            addLabel("cold drink")
+        };
+        modify($tx){};
+end
+
+rule "Coffee Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches  "(?i).*coffee.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        System.out.println(" Labelling coffee - hot drink " );
+        modify($l){
+            addLabel("coffee"),
+            addLabel("hot drink")
+        };
+        modify($tx){};
+end
+
+rule "Tea Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches  "(?i).*tea.*" ) 
+        $tx: Transaction( lines contains $l )
+    then
+        modify($l){
+            addLabel("tea"),
+            addLabel("hot drink")
+        };
+        modify($tx){};
+end
+
+rule "Sandwich Tx"
+    no-loop true
+    lock-on-active true
+    when
+        $l: Line( $desc: itemDescription matches  "(?i).*sandwich.*" )
+        $tx: Transaction( lines contains $l ) 
+    then
+        System.out.println(" Labelling food - sandwich " );
+        modify($l){
+            addLabel("food"),
+            addLabel("sandwich")
+        };
+        modify($tx){};
+end
+
+

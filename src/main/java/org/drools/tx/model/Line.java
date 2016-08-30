@@ -16,11 +16,16 @@
 
 package org.drools.tx.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Line {
+
     private String code;
     private String itemDescription;
     private int quantity;
     private Double totalToPay;
+    private List<String> labels = new ArrayList<>();
 
     public Line( String code, String itemDescription, int quantity, Double totalToPay ) {
         this.code = code;
@@ -60,6 +65,20 @@ public class Line {
     public void setTotalToPay( Double totalToPay ) {
         this.totalToPay = totalToPay;
     }
-    
-    
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels( List<String> labels ) {
+        this.labels = labels;
+    }
+
+    public void addLabel( String label ) {
+        if ( this.labels == null ) {
+            this.labels = new ArrayList<>();
+        }
+        this.labels.add( label );
+    }
+
 }

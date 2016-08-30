@@ -27,19 +27,18 @@ public class Transaction {
     private Date tillTimestamp;
     private String currency;
     private Double basketTotal;
-    private Basket basket;
-    private List<Label> labels;
+    private List<Line> lines;
 
     public Transaction() {
     }
 
-    public Transaction( String clientId, String tillTransactionId, Date tillTimestamp, String currency, Double basketTotal, Basket basket ) {
+    public Transaction( String clientId, String tillTransactionId, Date tillTimestamp, String currency, Double basketTotal, List<Line> lines ) {
         this.clientId = clientId;
         this.tillTransactionId = tillTransactionId;
         this.tillTimestamp = tillTimestamp;
         this.currency = currency;
         this.basketTotal = basketTotal;
-        this.basket = basket;
+        this.lines = lines;
     }
 
     public String getClientId() {
@@ -82,26 +81,20 @@ public class Transaction {
         this.basketTotal = basketTotal;
     }
 
-    public Basket getBasket() {
-        return basket;
+    public void setLines( List<Line> lines ) {
+        this.lines = lines;
     }
 
-    public void setBasket( Basket basket ) {
-        this.basket = basket;
+    public List<Line> getLines() {
+        return lines;
     }
 
-    public List<Label> getLabels() {
+    public List<String> getLabels() {
+        List<String> labels = new ArrayList<>();
+        for ( Line l : this.lines ) {
+            labels.addAll( l.getLabels() );
+        }
         return labels;
     }
 
-    public void setLabels( List<Label> labels ) {
-        this.labels = labels;
-    }
-
-    public void addLabel( String label ) {
-        if ( this.labels == null ) {
-            this.labels = new ArrayList<>();
-        }
-        this.labels.add( new Label( label ) );
-    }
 }

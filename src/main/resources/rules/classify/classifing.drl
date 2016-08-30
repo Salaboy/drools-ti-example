@@ -1,0 +1,22 @@
+package rules.classifing;
+
+import org.drools.tx.model.*;
+
+
+rule "Lunch Sandwich Labels"
+    when
+        $tx: Transaction( labels contains "hot drink" &&  labels contains "sandwich"  )
+    then
+        System.out.println(">> Someone is buying lunch");
+end
+
+rule "Lunch Sandwich Sharing Labels"
+    when
+        $tx: Transaction( labels contains "hot drink" &&  labels contains "sandwich" &&  labels contains "sharing"  )
+    then
+        System.out.println(">> Someone is buying lunch to share! ");
+end
+
+
+
+
