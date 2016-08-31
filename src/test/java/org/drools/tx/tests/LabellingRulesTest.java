@@ -6,12 +6,14 @@
 
 package org.drools.tx.tests;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.drools.tx.model.Line;
 import org.drools.tx.model.Transaction;
+import org.drools.tx.utils.TransactionFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -19,6 +21,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
@@ -50,6 +53,7 @@ public class LabellingRulesTest {
     private KieBase kBase;
 
     @Test
+    @Ignore
     public void hello() {
         assertNotNull( kBase );
         KieSession kSession = kBase.newKieSession();
@@ -57,7 +61,7 @@ public class LabellingRulesTest {
         List<Transaction> txs = createTXs();
         for ( Transaction tx : txs ) {
             kSession.insert( tx );
-            
+
             for ( Line l : tx.getLines() ) {
                 kSession.insert( l );
             }
@@ -91,6 +95,55 @@ public class LabellingRulesTest {
         assertEquals( 0, queryResults.size() );
     }
 
+    @Test
+    public void realDataTest() throws Exception {
+        assertNotNull( kBase );
+        KieSession kSession = kBase.newKieSession();
+        assertNotNull( kSession );
+
+        URL resource = this.getClass().getResource( "/data/data-mini.csv" );
+        assertNotNull( resource );
+        String filePath = resource.getFile();
+        System.out.println( " FilePath: " + filePath );
+        List<Transaction> txs = TransactionFactory.createTxsFromCSV( filePath );
+        System.out.println( "Total TXS: " + txs.size() );
+        for ( Transaction tx : txs ) {
+            kSession.insert( tx );
+
+            for ( Line l : tx.getLines() ) {
+                kSession.insert( l );
+            }
+        }
+
+        kSession.openLiveQuery( "getUnlabelledTXs", null, new ViewChangedEventListener() {
+            @Override
+            public void rowInserted( Row row ) {
+                //System.out.println( ">>> Row Inserted: " + row );
+            }
+
+            @Override
+            public void rowDeleted( Row row ) {
+                //System.out.println( ">>> Row Deleted: " + row );
+            }
+
+            @Override
+            public void rowUpdated( Row row ) {
+                //System.out.println( ">>> Row Updated: " + row );
+            }
+        } );
+        int fireAllRules = kSession.fireAllRules();
+//        assertEquals( 669, fireAllRules );
+
+        for ( Transaction tx : txs ) {
+            //assertEquals( 2, tx.getLabels().size() );
+            System.out.println( "TX Labels: " + tx.getLabels() );
+        }
+
+        QueryResults queryResults = kSession.getQueryResults( "getUnlabelledTXs", null );
+        System.out.println( "Unlabelled: " + queryResults.size() );
+//        assertEquals( 0, queryResults.size() );
+    }
+
     private List<Transaction> createTXs() {
         List<Transaction> txs = new ArrayList<>();
         Transaction tx = new Transaction();
@@ -98,7 +151,7 @@ public class LabellingRulesTest {
         tx.setTillTransactionId( "AAA" );
         tx.setTillTimestamp( new Date() );
         List<Line> lines = new ArrayList<>();
-        lines.add( new Line( "C000", "Coffee", 2, 5.75 ) );
+        lines.add( new Line( "C000", "Coffee", 2.0, 5.75 ) );
         tx.setLines( lines );
         tx.setBasketTotal( calculateBasketTotal( lines ) );
         txs.add( tx );
@@ -107,7 +160,7 @@ public class LabellingRulesTest {
         tx.setTillTransactionId( "AAA" );
         tx.setTillTimestamp( new Date() );
         lines = new ArrayList<>();
-        lines.add( new Line( "C001", "ACoffeeLatte", 1, 5.75 ) );
+        lines.add( new Line( "C001", "ACoffeeLatte", 1.0, 5.75 ) );
         tx.setLines( lines );
         tx.setBasketTotal( calculateBasketTotal( lines ) );
         txs.add( tx );

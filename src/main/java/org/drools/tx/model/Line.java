@@ -16,18 +16,18 @@
 
 package org.drools.tx.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Line {
 
     private String code;
     private String itemDescription;
-    private int quantity;
+    private Double quantity;
     private Double totalToPay;
-    private List<String> labels = new ArrayList<>();
+    private Set<String> labels = new HashSet<>();
 
-    public Line( String code, String itemDescription, int quantity, Double totalToPay ) {
+    public Line( String code, String itemDescription, Double quantity, Double totalToPay ) {
         this.code = code;
         this.itemDescription = itemDescription;
         this.quantity = quantity;
@@ -50,11 +50,11 @@ public class Line {
         this.itemDescription = itemDescription;
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity( int quantity ) {
+    public void setQuantity( Double quantity ) {
         this.quantity = quantity;
     }
 
@@ -66,19 +66,24 @@ public class Line {
         this.totalToPay = totalToPay;
     }
 
-    public List<String> getLabels() {
+    public Set<String> getLabels() {
         return labels;
     }
 
-    public void setLabels( List<String> labels ) {
+    public void setLabels( Set<String> labels ) {
         this.labels = labels;
     }
 
     public void addLabel( String label ) {
         if ( this.labels == null ) {
-            this.labels = new ArrayList<>();
+            this.labels = new HashSet<>();
         }
         this.labels.add( label );
+    }
+
+    @Override
+    public String toString() {
+        return "Line{" + "code=" + code + ", itemDescription=" + itemDescription + ", quantity=" + quantity + ", totalToPay=" + totalToPay + ", labels=" + labels + '}';
     }
 
 }

@@ -16,9 +16,10 @@
 
 package org.drools.tx.model;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Transaction {
 
@@ -89,12 +90,17 @@ public class Transaction {
         return lines;
     }
 
-    public List<String> getLabels() {
-        List<String> labels = new ArrayList<>();
+    public Set<String> getLabels() {
+        Set<String> labels = new HashSet<>();
         for ( Line l : this.lines ) {
             labels.addAll( l.getLabels() );
         }
         return labels;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" + "clientId=" + clientId + ", tillTransactionId=" + tillTransactionId + ", tillTimestamp=" + tillTimestamp + ", currency=" + currency + ", basketTotal=" + basketTotal + ", lines=" + lines + '}';
     }
 
 }

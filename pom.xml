@@ -17,6 +17,9 @@
         <version.fabric8>2.1.11</version.fabric8>
         <version.weld>2.3.0.Final</version.weld>
         <version.cdi>1.2</version.cdi>
+        <version.super-csv>2.4.0</version.super-csv>
+        <version.jcabi>0.17.2</version.jcabi>
+    
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -72,11 +75,29 @@
             <version>${version.kie}</version>
         </dependency>
         <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv-java8</artifactId>
+            <version>${version.super-csv}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv-joda</artifactId>
+            <version>${version.super-csv}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-xml</artifactId>
+            <version>${version.jcabi}</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
             <version>${version.weld}</version>
             <scope>test</scope>
         </dependency>
+        
         <!--        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>

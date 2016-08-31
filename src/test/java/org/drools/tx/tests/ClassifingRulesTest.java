@@ -45,7 +45,7 @@ public class ClassifingRulesTest {
         return jar;
     }
 
-   @Inject
+    @Inject
     @KBase( "clasifyKbase" )
     private KieBase kBase;
 
@@ -57,7 +57,7 @@ public class ClassifingRulesTest {
         List<Transaction> txs = createTXs();
         for ( Transaction tx : txs ) {
             kSession.insert( tx );
-            
+
             for ( Line l : tx.getLines() ) {
                 kSession.insert( l );
             }
@@ -98,8 +98,8 @@ public class ClassifingRulesTest {
         tx.setTillTransactionId( "AAA" );
         tx.setTillTimestamp( new Date() );
         List<Line> lines = new ArrayList<>();
-        lines.add( new Line( "C000", "Coffee", 2, 5.75 ) );
-        lines.add( new Line( "S000", "Tuna Sandwich", 1, 5.0 ) );
+        lines.add( new Line( "C000", "Coffee", 2.0, 5.75 ) );
+        lines.add( new Line( "S000", "Tuna Sandwich", 1.0, 5.0 ) );
         tx.setLines( lines );
         tx.setBasketTotal( calculateBasketTotal( lines ) );
         txs.add( tx );
@@ -108,7 +108,7 @@ public class ClassifingRulesTest {
         tx.setTillTransactionId( "AAA" );
         tx.setTillTimestamp( new Date() );
         lines = new ArrayList<>();
-        lines.add( new Line( "C001", "ACoffeeLatte", 2, 5.75 ) );
+        lines.add( new Line( "C001", "ACoffeeLatte", 2.0, 5.75 ) );
         tx.setLines( lines );
         tx.setBasketTotal( calculateBasketTotal( lines ) );
         txs.add( tx );
